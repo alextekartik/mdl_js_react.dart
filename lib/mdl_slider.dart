@@ -4,18 +4,28 @@ import "package:react/react.dart" as react;
 import "package:tekartik_mdl_js/mdl_js.dart" as mdl;
 import "package:tekartik_mdl_js/mdl_classes.dart" as mdl;
 import 'package:tekartik_utils/js_utils.dart';
+import 'dart:html';
 
 class _MdlSliderComponent extends react.Component {
 
   @override
-  void componentDidMount(/*DOMElement*/
+  void componentDidMount(InputElement
                          rootNode) {
+    print("upgrading slider ${rootNode} ${rootNode.parent}");
     mdl.componentHandler.upgradeElement(rootNode);
+
+    rootNode.onChange.listen((Event e) {
+      print(e.target.value);
+      //props["value"] = e.target.value;
+      rootNode.value = e.target.value;
+      componentWillReceiveProps(props);
+
+    });
   }
 
   @override
   render() {
-    print('rendering');
+    print('rendering slider');
     List classes = [mdl.slider, mdl.jsSlider];
     /*
     if (fab == true) {
@@ -32,7 +42,9 @@ class _MdlSliderComponent extends react.Component {
       "type": "range",
       "min": props["min"],
       "max": props["max"],
-      "value": props["value"] });
+/*
+      "value": props["value"]
+    */});
     //print(jsObjectToDebugString(button));
     return button;
   }
